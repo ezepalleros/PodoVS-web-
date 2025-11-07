@@ -3,32 +3,29 @@
 <main>
   <!-- Hero -->
   <section class="position-relative overflow-hidden">
-    <div class="hero-bg"></div>
-    <div class="container py-5 py-lg-6">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-6">
-          <span class="badge rounded-pill text-bg-success-subtle border border-success-subtle mb-3">Caminar nunca fue tan divertido</span>
-          <h1 class="display-5 fw-bold lh-tight">Convertí tus <span class="text-gradient-emerald">pasos</span> en <span class="text-gradient-amber">recompensas</span></h1>
-          <p class="lead text-secondary mt-3">PodoVS es una app de pasos con estilo <strong>RPG casual</strong>: subí de nivel, personalizá tu avatar y competí sanamente con amigos. Metas diarias, cofres, eventos y rankings para motivarte a caminar todos los días.</p>
-          <div class="d-flex flex-wrap gap-2 mt-3">
-            <a href="#descargar" class="btn btn-primary btn-lg rounded-pill">Descargar la app</a>
-            <a href="#features" class="btn btn-outline-secondary btn-lg rounded-pill">Ver características</a>
-          </div>
-          <ul class="list-unstyled d-flex flex-wrap gap-4 mt-4 text-muted small">
-            <li class="d-flex align-items-center gap-2"><img src="img/check.svg" width="18" height="18" alt="">Integración con APIs de pasos confiables</li>
-            <li class="d-flex align-items-center gap-2"><img src="img/star.svg" width="18" height="18" alt="">Motivación y progreso diario</li>
-          </ul>
-        </div>
-        <div class="col-lg-6">
-          <div class="card shadow-sm rounded-4 overflow-hidden">
-            <div class="ratio ratio-4x5 bg-body-tertiary d-flex align-items-center justify-content-center">
-              <img src="img/avatar_placeholder.svg" class="img-fluid p-4" alt="Avatar PodoVS" style="max-height: 100%;">
-            </div>
-          </div>
-        </div>
+  <div class="hero-bg"></div>
+  <div class="container py-5 py-lg-6">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-tight">
+          Convertí tus <span class="text-gradient-emerald">pasos</span> en <span class="text-gradient-amber">recompensas</span>
+        </h1>
+        <p class="lead text-secondary mt-3">
+          PodoVS es una app de pasos con estilo <strong>RPG casual</strong>: subí de nivel, personalizá tu avatar y competí con amigos.  
+          Metas, cofres y rankings para mantenerte motivado.
+        </p>
+
+        <a href="#descargar" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg mt-3">
+          <strong>Descargar la app</strong>
+        </a>
+      </div>
+
+      <div class="col-lg-6 text-center">
+        <img src="img/icon_podovs.png" class="floating-logo" alt="Logo PodoVS">
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Features -->
   <section id="features" class="py-5">
@@ -112,7 +109,7 @@
         </div>
       </div>
 
-      <!-- 3) Duelos 1v1 + Eventos -->
+      <!-- 3) Duelos + Coop -->
       <div class="feature-box fb-violet my-4">
         <div class="row align-items-center g-4">
           <div class="col-lg-7">
@@ -129,12 +126,9 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-5">
             <div class="duel-stage" aria-label="Animación de duelos y eventos">
               <div class="duel-viewport">
-
-                <!-- Escena 1: 1v1 -->
                 <div class="scene scene-1v1 active">
                   <div class="scene-inner vs-wrap">
                     <div class="vs-col">
@@ -145,44 +139,26 @@
                         <div class="vs-bar"><div class="vs-fill p1"></div></div>
                       </div>
                     </div>
-
                     <div class="vs-badge">VS</div>
-
                     <div class="vs-col">
                       <div class="meta text-end">
                         <div class="vs-name">Rival</div>
                         <div class="vs-steps p2">0</div>
-                        <div class="vs-bar">
-                          <div class="vs-fill p2" style="background:linear-gradient(90deg,#f59e0b,#ef4444)"></div>
-                        </div>
+                        <div class="vs-bar"><div class="vs-fill p2" style="background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
                       </div>
                       <img class="sprite" src="img/stickrunning-vs.png" alt="Rival mirando a la izquierda">
                     </div>
                   </div>
                 </div>
 
-                <!-- Escena 2: Cooperativo -->
                 <div class="scene scene-coop">
                   <div class="scene-inner coop-wrap">
                     <div class="party">
-                      <div class="member">
-                        <img class="sprite" src="img/stickrunning.png" alt="">
-                        <div class="mini"><div class="fill"></div></div>
-                      </div>
-                      <div class="member">
-                        <img class="sprite" src="img/stickrunning.png" alt="">
-                        <div class="mini"><div class="fill"></div></div>
-                      </div>
-                      <div class="member">
-                        <img class="sprite" src="img/stickrunning.png" alt="">
-                        <div class="mini"><div class="fill"></div></div>
-                      </div>
-                      <div class="member">
-                        <img class="sprite" src="img/stickrunning.png" alt="">
-                        <div class="mini"><div class="fill"></div></div>
-                      </div>
+                      <div class="member"><img class="sprite" src="img/stickrunning.png" alt=""><div class="mini"><div class="fill"></div></div></div>
+                      <div class="member"><img class="sprite" src="img/stickrunning.png" alt=""><div class="mini"><div class="fill"></div></div></div>
+                      <div class="member"><img class="sprite" src="img/stickrunning.png" alt=""><div class="mini"><div class="fill"></div></div></div>
+                      <div class="member"><img class="sprite" src="img/stickrunning.png" alt=""><div class="mini"><div class="fill"></div></div></div>
                     </div>
-
                     <div class="boss">
                       <img src="img/pixelmonster.png" alt="Jefe mensual">
                       <div class="boss-hp"><div class="boss-fill"></div></div>
@@ -197,7 +173,7 @@
         </div>
       </div>
 
-      <!-- 4) Rankings (animación de tabla) -->
+      <!-- 4) Rankings -->
       <div class="feature-box fb-amber mt-4">
         <div class="row align-items-center g-4">
           <div class="col-lg-7">
@@ -235,105 +211,157 @@
     <div class="container">
       <div class="text-center mb-4">
         <h2 class="fw-bold h1">Un vistazo a la app</h2>
+        <p class="text-secondary mb-0">Aprendé la interfaz en segundos con estas llamadas.</p>
       </div>
-      <div class="row g-3">
-        <?php for($i=0;$i<6;$i++): ?>
-          <div class="col-6 col-lg-4">
-            <div class="ratio ratio-9x16 bg-white rounded-4 border d-flex align-items-center justify-content-center">
-              <img src="img/phone_placeholder.svg" alt="Pantalla" class="p-4" style="max-height: 100%;">
-            </div>
-          </div>
-        <?php endfor; ?>
-      </div>
-    </div>
-  </section>
 
-  <!-- How it works -->
-  <section id="how" class="py-5">
-    <div class="container">
-      <div class="text-center mb-4">
-        <h2 class="fw-bold h1">Cómo funciona</h2>
-      </div>
-      <div class="row g-4">
-        <?php
-          $steps = [
-            ['icon'=>'footprints.svg','title'=>'Asigná tu meta','desc'=>'Elegí metas diarias/semanales que se adapten a vos.'],
-            ['icon'=>'phone.svg','title'=>'Caminá y sumá','desc'=>'La app registra pasos con APIs confiables.'],
-            ['icon'=>'gift.svg','title'=>'Recibí recompensas','desc'=>'Monedas, XP y cofres por tu constancia.'],
-            ['icon'=>'trophy.svg','title'=>'Competí o cooperá','desc'=>'Rankings, duelos y eventos mensuales.'],
-          ];
-          foreach($steps as $s):
-        ?>
-        <div class="col-md-6 col-lg-3">
-          <div class="card h-100 rounded-4">
-            <div class="card-body">
-              <div class="icon-bubble bg-info-subtle text-info-emphasis mb-2">
-                <img src="img/<?php echo $s['icon']; ?>" width="24" height="24" alt="">
-              </div>
-              <h3 class="h6"><?php echo $s['title']; ?></h3>
-              <p class="text-secondary small mb-0"><?php echo $s['desc']; ?></p>
-            </div>
-          </div>
-        </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
-  </section>
+      <div class="card rounded-4 shadow-sm overflow-hidden">
+        <div class="card-body p-3 p-lg-4">
+          <div class="color-annotator">
+            <svg class="row-arrows" aria-hidden="true"></svg>
 
-  <!-- CTA -->
-  <section id="descargar" class="py-5 bg-body-tertiary">
-    <div class="container">
-      <div class="card rounded-4 shadow-sm">
-        <div class="card-body p-4 p-lg-5">
-          <div class="row align-items-center g-4">
-            <div class="col-lg-7">
-              <h3 class="fw-bold">Listo para empezar a caminar con motivación</h3>
-              <p class="text-secondary">Descargá PodoVS y convertí tus pasos en progreso. Compatible con Android. Próximamente versión web con progresión cruzada.</p>
-              <div class="d-flex flex-wrap gap-2">
-                <a href="#" class="btn btn-primary btn-lg rounded-pill">Google Play (próximamente)</a>
-                <a href="#" class="btn btn-outline-secondary btn-lg rounded-pill">Descargar APK (beta)</a>
+            <div class="side left">
+              <div class="callout" data-index="0" style="--c:#0ea5e9">
+                <h4 class="title">Accesos rápidos</h4>
+                <p class="desc">Metas, estadísticas, perfil, recordatorios y lista.</p>
               </div>
             </div>
-            <div class="col-lg-5">
-              <ul class="list-unstyled small">
-                <li class="d-flex align-items-start gap-2 mb-2"><img src="img/check.svg" width="18" height="18" alt=""><span>Registro e inicio de sesión simple</span></li>
-                <li class="d-flex align-items-start gap-2 mb-2"><img src="img/check.svg" width="18" height="18" alt=""><span>Metas diarias/semanales y barra de progreso</span></li>
-                <li class="d-flex align-items-start gap-2 mb-2"><img src="img/check.svg" width="18" height="18" alt=""><span>Cofres con sistema pity</span></li>
-                <li class="d-flex align-items-start gap-2 mb-0"><img src="img/check.svg" width="18" height="18" alt=""><span>Eventos mensuales cooperativos (4 jugadores)</span></li>
-              </ul>
+
+            <div class="phone-col">
+              <div class="phone-annotator">
+                <img class="phone-shot" src="img/app_home_demo.jpg" alt="Pantalla principal de PodoVS">
+                <div class="hotspot" style="--x:15%; --y:3.5%; --w:70%; --h:10%; --c:#0ea5e9"></div>
+                <div class="hotspot" style="--x:28%; --y:36%; --w:44%; --h:40%; --c:#10b981"></div>
+                <div class="hotspot" style="--x:16%; --y:87%; --w:68%; --h:10%; --c:#f59e0b"></div>
+              </div>
             </div>
+
+            <div class="side right">
+              <div class="callout" data-index="1" style="--c:#10b981">
+                <h4 class="title">Tu avatar</h4>
+                <p class="desc">Vestilo con sombreros, remeras, jeans y zapatos.</p>
+              </div>
+              <div class="callout" data-index="2" style="--c:#f59e0b">
+                <h4 class="title">Navegación</h4>
+                <p class="desc">Inicio, Tienda, VS, Cooperativo y Rankings.</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- CTA (Descarga) -->
+  <section id="descargar" class="py-5">
+    <div class="container">
+      <div class="download-cta">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <span class="badge rounded-pill mb-3">Nuevo • Beta abierta</span>
+            <h3 class="display-6 fw-bold mb-3">Descargá PodoVS ahora</h3>
+            <p class="mb-4">Descargá PodoVS y unite a los eventos mensuales, rankings y recompensas diarias. Compatible con Android. Próximamente versión web con progresión cruzada.</p>
+
+            <div class="d-flex flex-wrap gap-2">
+              <a href="#" class="btn-gplay">
+                <img src="img/gplay-logo.png" alt="" aria-hidden="true">
+                <span>Google Play (próximamente)</span>
+              </a>
+              <a href="#" class="btn-apk">
+                <img src="img/android-logo.png" alt="" aria-hidden="true">
+                <span>Descargar APK (beta)</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="podo-logo-wrap">
+              <img class="podo-logo" src="img/icon_podovs.png" alt="Ícono PodoVS">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (reh echo en una sola caja azul) -->
   <section id="faq" class="py-5">
     <div class="container">
-      <div class="text-center mb-4">
-        <h2 class="fw-bold h1">Preguntas frecuentes</h2>
-      </div>
-      <div class="row g-3">
-        <?php
-          $faqs = [
-            ['q'=>'¿Cómo cuenta los pasos?','a'=>'Integra APIs de pasos confiables del dispositivo (p. ej. Health Connect).'],
-            ['q'=>'¿Se puede hacer trampa?','a'=>'Tenemos heurísticas básicas de detección de fraude (picos imposibles, velocidad, etc.).'],
-            ['q'=>'¿Necesito internet?','a'=>'Funciona en modo lectura offline; al reconectar sincroniza el progreso.'],
-            ['q'=>'¿Qué plataformas soporta?','a'=>'Android primero. Próximamente Web con panel e integración cruzada.'],
-          ];
-          foreach($faqs as $f):
-        ?>
-        <div class="col-md-6">
-          <div class="card rounded-4 h-100">
-            <div class="card-body">
-              <h3 class="h6"><?php echo $f['q']; ?></h3>
-              <p class="text-secondary small mb-0"><?php echo $f['a']; ?></p>
+      <div class="faq-outer">
+        <div class="header">
+          <h2 class="fw-bold h1 mb-1">Preguntas frecuentes</h2>
+          <p class="subtitle">Lo esencial, directo al punto.</p>
+        </div>
+
+        <div class="accordion faq-accordion" id="faqAll">
+          <!-- 1 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq1h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                ¿Cómo cuenta los pasos?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">Integra APIs de pasos confiables del dispositivo (p. ej. Health Connect).</div>
+            </div>
+          </div>
+          <!-- 2 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq2h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                ¿Se puede hacer trampa?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">Tenemos heurísticas de detección de fraude (picos imposibles, velocidad y patrones anómalos).</div>
+            </div>
+          </div>
+          <!-- 3 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq3h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                ¿Funciona sin internet?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">Opera en modo lectura offline; al reconectar sincroniza tus pasos, XP y recompensas.</div>
+            </div>
+          </div>
+          <!-- 4 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq4h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                ¿Qué plataformas soporta?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">Android primero. Próximamente Web con panel y progresión cruzada.</div>
+            </div>
+          </div>
+          <!-- 5 (NUEVA) -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq5h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                ¿Cuánto consume de batería?
+              </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">El conteo de pasos usa sensores de baja energía; el impacto es mínimo (similar a apps fitness populares).</div>
+            </div>
+          </div>
+          <!-- 6 (NUEVA) -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq6h">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                ¿Habrá versión iOS?
+              </button>
+            </h2>
+            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAll">
+              <div class="accordion-body">Está en evaluación. La prioridad actual es Android + Web; iOS dependerá del interés de la comunidad.</div>
             </div>
           </div>
         </div>
-        <?php endforeach; ?>
-      </div>
+      </div><!-- /faq-outer -->
     </div>
   </section>
 </main>
