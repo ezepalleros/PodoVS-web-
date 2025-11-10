@@ -12,3 +12,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# Firebase configs reales
+config/firebase-config.js
+**/google-services.json
+**/GoogleService-Info.plist
+
