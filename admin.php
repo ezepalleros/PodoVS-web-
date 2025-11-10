@@ -59,7 +59,7 @@ $ADMIN_NONCE = $_SESSION['admin_login_nonce'];
 
   <script>
   const firebaseConfig = {
-    apiKey: "NADADENADA",
+    apiKey: "AIzaSyAH-grTjHt4KxqAwuf6lY_Z5Eh_y0FNYR0",
     authDomain: "podovs-ba062.firebaseapp.com",
     projectId: "podovs-ba062",
     storageBucket: "podovs-ba062.appspot.com",
