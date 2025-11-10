@@ -1,31 +1,40 @@
+<?php
+// CSRF para el formulario de contacto
+session_start();
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$CONTACT_STATUS = $_GET['contact'] ?? '';
+?>
+
 <?php include __DIR__ . '/componentes/header.php'; ?>
 
 <main>
   <!-- Hero -->
   <section class="position-relative overflow-hidden">
-  <div class="hero-bg"></div>
-  <div class="container py-5 py-lg-6">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6">
-        <h1 class="display-5 fw-bold lh-tight">
-          Convertí tus <span class="text-gradient-emerald">pasos</span> en <span class="text-gradient-amber">recompensas</span>
-        </h1>
-        <p class="lead text-secondary mt-3">
-          PodoVS es una app de pasos con estilo <strong>RPG casual</strong>: subí de nivel, personalizá tu avatar y competí con amigos.  
-          Metas, cofres y rankings para mantenerte motivado.
-        </p>
+    <div class="hero-bg"></div>
+    <div class="container py-5 py-lg-6">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <h1 class="display-5 fw-bold lh-tight">
+            Convertí tus <span class="text-gradient-emerald">pasos</span> en <span class="text-gradient-amber">recompensas</span>
+          </h1>
+          <p class="lead text-secondary mt-3">
+            PodoVS es una app de pasos con estilo <strong>RPG casual</strong>: subí de nivel, personalizá tu avatar y competí con amigos.  
+            Metas, cofres y rankings para mantenerte motivado.
+          </p>
 
-        <a href="#descargar" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg mt-3">
-          <strong>Descargar la app</strong>
-        </a>
-      </div>
+          <a href="#descargar" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg mt-3">
+            <strong>Descargar la app</strong>
+          </a>
+        </div>
 
-      <div class="col-lg-6 text-center">
-        <img src="img/icon_podovs.png" class="floating-logo" alt="Logo PodoVS">
+        <div class="col-lg-6 text-center">
+          <img src="img/icon_podovs.png" class="floating-logo" alt="Logo PodoVS">
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- Features -->
   <section id="features" class="py-5">
@@ -284,7 +293,7 @@
     </div>
   </section>
 
-  <!-- FAQ (reh echo en una sola caja azul) -->
+  <!-- FAQ -->
   <section id="faq" class="py-5">
     <div class="container">
       <div class="faq-outer">
@@ -338,7 +347,7 @@
               <div class="accordion-body">Android primero. Próximamente Web con panel y progresión cruzada.</div>
             </div>
           </div>
-          <!-- 5 (NUEVA) -->
+          <!-- 5 -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="faq5h">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
@@ -349,7 +358,7 @@
               <div class="accordion-body">El conteo de pasos usa sensores de baja energía; el impacto es mínimo (similar a apps fitness populares).</div>
             </div>
           </div>
-          <!-- 6 (NUEVA) -->
+          <!-- 6 -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="faq6h">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
@@ -364,6 +373,64 @@
       </div><!-- /faq-outer -->
     </div>
   </section>
-</main>
+
+<!-- ================== CONTACTO / Q&A POR MAIL (solo visual) ================== -->
+<section id="contacto" class="py-5">
+  <div class="container">
+    <div class="contact-card rounded-4 p-4 p-lg-5 shadow-sm position-relative overflow-hidden">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+          <h2 class="fw-bold display-6 mb-2">¿Tenés una pregunta?</h2>
+          <p class="text-secondary mb-3">
+            Escribinos y te respondemos a la brevedad. El mensaje se envía a
+            <strong>consultas@podovs.com</strong>.
+          </p>
+          <ul class="list-unstyled small text-secondary mb-0">
+            <li>• Tiempo de respuesta habitual: 24–48 hs.</li>
+            <li>• Soporte de beta abierta y sugerencias de features.</li>
+            <li>• Reportes de bugs y feedback de usabilidad.</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <form class="contact-form needs-validation"
+                action="mailto:ezequiel.palleros@davinci.edu.ar?subject=Consulta%20desde%20la%20web%20PodoVS"
+                method="post" enctype="text/plain" novalidate>
+            <!-- honeypot “invisible” (no funcional, solo decorativo) -->
+            <input type="text" name="website" class="d-none" tabindex="-1" autocomplete="off">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Nombre</label>
+              <input type="text" name="Nombre" class="form-control form-control-lg" placeholder="Tu nombre" required>
+              <div class="invalid-feedback">Ingresá tu nombre.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email</label>
+              <input type="email" name="Email" class="form-control form-control-lg" placeholder="tu@email.com" required>
+              <div class="invalid-feedback">Ingresá un email válido.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Mensaje</label>
+              <textarea name="Mensaje" class="form-control form-control-lg" rows="5" placeholder="Contanos en qué podemos ayudarte" required></textarea>
+              <div class="invalid-feedback">Escribí tu consulta.</div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <button class="btn btn-beta-cta px-4 py-3" type="submit">
+                <span class="shine" aria-hidden="true"></span>
+                Enviar consulta
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- fondo decor -->
+      <div class="contact-bubbles" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
 
 <?php include __DIR__ . '/componentes/footer.php'; ?>
