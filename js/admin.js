@@ -1,4 +1,4 @@
-// js/admin.js — v20 (unificado)
+// js/admin.js — v21 (unificado)
 
 // ===== Firebase =====
 const firebaseConfig = {
@@ -29,7 +29,7 @@ const tsToDate = (ts)=>{
   }catch{ return '—'; }
 };
 
-// ===== LOGIN (igual que antes) =====
+// ===== LOGIN =====
 const form = $('#adminForm');
 if (form){
   const emailI = $('#email'), passI = $('#password'), btn = $('#btnLogin');
@@ -57,7 +57,7 @@ if (form){
   });
 }
 
-// ===== USUARIOS (sin cambios funcionales) =====
+// ===== USUARIOS ===== (igual que v20; omito comentarios para acortar)
 if (document.getElementById('usersTable')) {
   const loading   = $('#loading');
   const tableWrap = $('#tableWrap');
@@ -204,7 +204,6 @@ if (document.body.dataset.page === 'admin-cos') {
     const previewUrl = (origen, asset) => {
       if (!asset) return '';
       if (origen === 'cloudinary' || /^https?:\/\//i.test(asset)) return asset;
-      // Miniatura local (si la tenés montada en /img/cosmetics). Si no existe, no se mostrará.
       return `/img/cosmetics/${asset}.png`;
     };
 
@@ -240,7 +239,6 @@ if (document.body.dataset.page === 'admin-cos') {
         return;
       }
       tbody.innerHTML = arr.map(r=>{
-        // Para cloudinary -> link “Abrir”; para local -> raya (sin atajo)
         const linkHtml = (r.origen==='cloudinary' && r.asset)
           ? `<a href="${escapeHtml(r.asset)}" target="_blank" rel="noopener">Abrir</a>`
           : '—';
@@ -277,11 +275,13 @@ if (document.body.dataset.page === 'admin-cos') {
     const lblOrigen = $('#lblOrigen');
     const groupLocal= $('#groupLocal');
     const groupCloud= $('#groupCloud');
-    const elAsset   = $('#cosAssetName'); // solo nombre local
-    const elUrl     = $('#cosUrl');       // url cloudinary
+    const elAsset   = $('#cosAssetName');
+    const elUrl     = $('#cosUrl');
     const elPrecio  = $('#cosPrecio');
     const swEvento  = $('#swEvento');
     const lblEvento = $('#lblEvento');
+    const swTienda  = $('#swTienda');
+    const lblTienda = $('#lblTienda');
     const tplLink   = $('#tplLink');
     const btnSave   = $('#btnCosSave');
     const btnCreate = $('#btnCosCreate');
@@ -307,14 +307,27 @@ if (document.body.dataset.page === 'admin-cos') {
         groupCloud.classList.add('d-none');
       }
     };
+
     const setEventoUI = (isEvento)=>{
       lblEvento.textContent = isEvento ? 'Sí' : 'No';
       if (isEvento) { elPrecio.value = '0'; elPrecio.setAttribute('disabled','disabled'); }
       else { if(elPrecio.value==='0') elPrecio.value='20000'; elPrecio.removeAttribute('disabled'); }
     };
 
+    const setTiendaUI = (isTienda)=>{
+      lblTienda.textContent = isTienda ? 'Sí' : 'No';
+      // Exclusión mutua: tienda <-> evento
+      if (isTienda && swEvento.checked) { swEvento.checked = false; setEventoUI(false); }
+    };
+
+    // exclusión mutua al tocar cualquiera
+    swEvento.addEventListener('change', ()=>{
+      setEventoUI(swEvento.checked);
+      if (swEvento.checked && swTienda.checked) { swTienda.checked = false; setTiendaUI(false); }
+    });
+    swTienda.addEventListener('change', ()=> setTiendaUI(swTienda.checked));
+
     swOrigen.addEventListener('change', ()=> setOrigenUI(swOrigen.checked));
-    swEvento.addEventListener('change', ()=> setEventoUI(swEvento.checked));
     elTipo.addEventListener('change', updateTpl);
 
     async function nextCosId(){
@@ -330,6 +343,8 @@ if (document.body.dataset.page === 'admin-cos') {
       elNombre.value = '';
       elTipo.value = defaultTipo || 'cabeza';
       swOrigen.checked = false; setOrigenUI(false);
+      // Por defecto: de tienda = sí, evento = no
+      swTienda.checked = true;  setTiendaUI(true);
       swEvento.checked = false; setEventoUI(false);
       elPrecio.value = '20000';
       elAsset.value = '';
@@ -340,12 +355,21 @@ if (document.body.dataset.page === 'admin-cos') {
       modal?.show();
     }
 
-    function openEdit(tr){
+    async function openEdit(tr){
       title.textContent = 'Editar cosmético';
       const id    = tr.dataset.id;
       const tipo  = tr.dataset.tipo;
       const origen= tr.dataset.origen;
       const asset = tr.dataset.asset || '';
+
+      // Leo cos_tienda directamente del doc
+      let tienda = true, evento = /sí/i.test(tr.children[6].textContent);
+      try {
+        const doc = await db.collection('cosmetics').doc(id).get();
+        const d = doc.data()||{};
+        if (typeof d.cos_tienda === 'boolean') tienda = d.cos_tienda;
+        if (typeof d.cos_evento === 'boolean') evento = d.cos_evento;
+      } catch {}
 
       elId.value     = id;
       elNombre.value = tr.children[1].textContent.trim();
@@ -356,8 +380,8 @@ if (document.body.dataset.page === 'admin-cos') {
       if (isCloud){ elUrl.value = asset; elAsset.value=''; }
       else { elAsset.value = asset; elUrl.value=''; }
 
-      const isEvento = /sí/i.test(tr.children[6].textContent);
-      swEvento.checked = isEvento; setEventoUI(isEvento);
+      swTienda.checked = !!tienda; setTiendaUI(swTienda.checked);
+      swEvento.checked = !!evento; setEventoUI(swEvento.checked);
 
       const priceParsed = parseInt((tr.children[4].textContent||'0').replace(/[^\d]/g,''), 10) || 0;
       elPrecio.value = String(priceParsed);
@@ -391,10 +415,11 @@ if (document.body.dataset.page === 'admin-cos') {
     $('#btnCosSave')?.addEventListener('click', async ()=>{
       const id = elId.value;
       const payload = {
-        cos_nombre:  elNombre.value.trim(),
-        cos_tipo:    elTipo.value,
-        cos_evento:  swEvento.checked === true,
-        cos_precio:  swEvento.checked ? 0 : parseInt(elPrecio.value,10),
+        cos_nombre:   elNombre.value.trim(),
+        cos_tipo:     elTipo.value,
+        cos_evento:   swEvento.checked === true,
+        cos_tienda:   swTienda.checked === true,
+        cos_precio:   swEvento.checked ? 0 : parseInt(elPrecio.value,10),
         cos_assetType: swOrigen.checked ? 'cloudinary' : 'local',
       };
       payload.cos_asset = swOrigen.checked ? elUrl.value.trim() : elAsset.value.trim();
@@ -410,10 +435,11 @@ if (document.body.dataset.page === 'admin-cos') {
     $('#btnCosCreate')?.addEventListener('click', async ()=>{
       const id = await nextCosId();
       const payload = {
-        cos_nombre:  elNombre.value.trim(),
-        cos_tipo:    elTipo.value,
-        cos_evento:  swEvento.checked === true,
-        cos_precio:  swEvento.checked ? 0 : parseInt(elPrecio.value,10),
+        cos_nombre:   elNombre.value.trim(),
+        cos_tipo:     elTipo.value,
+        cos_evento:   swEvento.checked === true,
+        cos_tienda:   swTienda.checked === true,
+        cos_precio:   swEvento.checked ? 0 : parseInt(elPrecio.value,10),
         cos_assetType: swOrigen.checked ? 'cloudinary' : 'local',
         cos_createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         cos_activo: true

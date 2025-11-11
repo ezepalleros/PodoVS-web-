@@ -35,20 +35,15 @@
         <li class="nav-item"><a class="nav-link nav-chip" href="#features">Características</a></li>
         <li class="nav-item"><a class="nav-link nav-chip" href="#screens">App</a></li>
         <li class="nav-item"><a class="nav-link nav-chip" href="#faq">Q&amp;A</a></li>
+        <li class="nav-item"><a class="nav-link nav-chip" href="#contacto">Consultar</a></li>
 
-        <!-- CTA Unificado -->
+        <!-- CTA Descargar + hotspot admin -->
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0 d-flex align-items-center">
           <a class="btn btn-beta-cta" href="#descargar">
             <span class="shine" aria-hidden="true"></span>
             Descargar
           </a>
-
-          <!-- Hotspot secreto (invisible) separado a la derecha del botón -->
-          <a href="admin.php"
-             class="secret-admin-inline ms-3"
-             aria-label="Abrir panel de administración"
-             title="">
-          </a>
+          <a href="admin.php" class="secret-admin-inline ms-3" aria-label="Abrir panel de administración"></a>
         </li>
       </ul>
     </div>

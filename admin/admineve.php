@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/admin_guard.php'; ?>
+<?php require __DIR__ . '/adminguard.php'; ?>
 <!doctype html>
 <html lang="es">
 <head>

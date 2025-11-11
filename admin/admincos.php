@@ -9,7 +9,7 @@ require __DIR__ . '/adminguard.php';
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestionar cosméticos • PodoVS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../css/stylesadmin.css?v=8" rel="stylesheet">
+  <link href="../css/stylesadmin.css?v=9" rel="stylesheet">
 </head>
 <body class="bg-body" data-page="admin-cos">
 <?php include __DIR__ . '/../componentes/headeradmin.php'; ?>
@@ -148,11 +148,19 @@ require __DIR__ . '/adminguard.php';
             <div class="form-text">Si es evento, queda siempre en 0.</div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <label class="form-label d-block">¿Es de evento?</label>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="swEvento">
               <label class="form-check-label" for="swEvento"><span id="lblEvento">No</span></label>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <label class="form-label d-block">¿Aparece en tienda?</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="swTienda">
+              <label class="form-check-label" for="swTienda"><span id="lblTienda">Sí</span></label>
             </div>
           </div>
 
@@ -186,7 +194,7 @@ require __DIR__ . '/adminguard.php';
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <!-- Lógica -->
-<script src="../js/admin.js?v=20" type="module"></script>
+<script src="../js/admin.js?v=21" type="module"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
