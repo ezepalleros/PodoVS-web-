@@ -1,20 +1,25 @@
-<?php require __DIR__ . '/adminguard.php'; ?>
+<?php
+// admin/adminpage.php — DASHBOARD MINIMAL
+require __DIR__ . '/adminguard.php';
+?>
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panel Admin • PodoVS</title>
+  <title>PodoVS • Panel</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../css/styles.css?v=6" rel="stylesheet">
+  <link href="../css/stylesadmin.css?v=10" rel="stylesheet">
 </head>
 <body class="bg-body">
-  <div class="container py-5">
+  <?php include __DIR__ . '/../componentes/headeradmin.php'; ?>
+
+  <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h1 class="h3 mb-0">Panel administrativo</h1>
       <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary" href="../index.php">← Volver al inicio</a>
-        <button id="btnLogout" class="btn btn-outline-danger">Cerrar sesión</button>
+        <a class="btn btn-outline-secondary" href="../index.php">← Inicio</a>
+        <a id="btnLogout" class="btn btn-outline-danger" href="../admin_gate.php?unset=1">Cerrar sesión</a>
       </div>
     </div>
 
@@ -50,16 +55,14 @@
         </a>
       </div>
     </div>
-  </div>
+  </main>
 
-  <script>
-  // Cerrar sesión del guard del servidor
-  document.getElementById('btnLogout')?.addEventListener('click', async ()=>{
-    try { await fetch('../admin_gate.php', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({unset:true})}); }
-    catch(e){}
-    // Volver al inicio
-    window.location.href = '../index.php';
-  });
-  </script>
+  <?php include __DIR__ . '/../componentes/footeradmin.php'; ?>
+
+  <!-- Firebase compat (solo para logout de Auth si querés) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <script src="../js/admin.js?v=10" type="module"></script>
 </body>
 </html>

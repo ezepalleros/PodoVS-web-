@@ -1,35 +1,48 @@
 <?php
-session_start();
-header('Content-Type: application/json');
+// /admin_gate.php — SET/UNSET sesión vía GET y REDIRECCIÓN
+declare(strict_types=1);
 
-if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
-  http_response_code(405);
-  echo json_encode(['ok' => false, 'err' => 'method']);
-  exit;
+// Mismos parámetros de cookie
+$cookieParams = [
+  'lifetime' => 0,
+  'path'     => '/',
+  'domain'   => '',
+  'secure'   => false,
+  'httponly' => true,
+  'samesite' => 'Lax',
+];
+if (PHP_VERSION_ID >= 70300) {
+  session_set_cookie_params($cookieParams);
+} else {
+  session_set_cookie_params(
+    $cookieParams['lifetime'],
+    $cookieParams['path'].'; samesite='.$cookieParams['samesite'],
+    $cookieParams['domain'],
+    $cookieParams['secure'],
+    $cookieParams['httponly']
+  );
 }
 
-$raw = file_get_contents('php://input');
-$data = json_decode($raw, true) ?: [];
+session_start();
 
-if (!empty($data['set'])) {
-  // Validar nonce emitido en admin.php
-  $nonce = $data['nonce'] ?? '';
-  if (!$nonce || empty($_SESSION['admin_login_nonce']) || !hash_equals($_SESSION['admin_login_nonce'], $nonce)) {
-    http_response_code(403);
-    echo json_encode(['ok' => false, 'err' => 'nonce']);
-    exit;
-  }
+if (isset($_GET['set'])) {
+  // Marca sesión de admin y redirige al panel
+  session_regenerate_id(true);
   $_SESSION['admin_ok'] = true;
   $_SESSION['admin_ok_time'] = time();
-  echo json_encode(['ok' => true]);
+  session_write_close();
+  header('Location: admin/adminpage.php');
   exit;
 }
 
-if (!empty($data['unset'])) {
-  unset($_SESSION['admin_ok'], $_SESSION['admin_ok_time'], $_SESSION['admin_login_nonce']);
-  echo json_encode(['ok' => true]);
+if (isset($_GET['unset'])) {
+  // Cierra sesión y redirige al inicio
+  unset($_SESSION['admin_ok'], $_SESSION['admin_ok_time']);
+  session_write_close();
+  header('Location: index.php');
   exit;
 }
 
-http_response_code(400);
-echo json_encode(['ok' => false]);
+// fallback
+header('Location: index.php');
+exit;
