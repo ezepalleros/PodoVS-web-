@@ -45,11 +45,11 @@ require __DIR__ . '/adminguard.php';
         </a>
       </div>
       <div class="col-md-4">
-        <a href="admineve.php" class="text-decoration-none">
+        <a href="adminroo.php" class="text-decoration-none">
           <div class="card shadow-sm h-100 rounded-4">
             <div class="card-body">
-              <h2 class="h5 mb-1">Gestionar eventos</h2>
-              <p class="text-secondary mb-0">Mensuales, cooperativos y 1v1.</p>
+              <h2 class="h5 mb-1">Gestionar salas</h2>
+              <p class="text-secondary mb-0">Eventos, rankings y versus.</p>
             </div>
           </div>
         </a>
