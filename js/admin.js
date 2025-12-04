@@ -1,4 +1,4 @@
-// js/admin.js — v22 (unificado)
+// js/admin.js — v25 (unificado con logs)
 
 // ===== Firebase =====
 const firebaseConfig = {
@@ -47,9 +47,39 @@ const tsToDate = (ts)=>{
   try{
     const d = ts.toDate ? ts.toDate() :
       (typeof ts.seconds==='number'? new Date(ts.seconds*1000) : new Date(ts));
-    return d.toLocaleDateString();
+    return d.toLocaleDateString('es-AR');
   }catch{ return '—'; }
 };
+const tsToDateTime = (ts)=>{
+  if(!ts) return '—';
+  try{
+    const d = ts.toDate ? ts.toDate() :
+      (typeof ts.seconds==='number'? new Date(ts.seconds*1000) : new Date(ts));
+    return d.toLocaleString('es-AR');
+  }catch{ return '—'; }
+};
+
+// ===== Helper de logs =====
+async function logAdminAction(action, collection, docId, extra = {}) {
+  try {
+    const user = auth.currentUser || await waitForAuthReady();
+    if (!user) return;
+
+    const logDoc = {
+      log_adminUid:   user.uid,
+      log_adminEmail: user.email || null,
+      log_action:     action,
+      log_collection: collection,
+      log_docId:      docId || null,
+      log_createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+      ...extra,
+    };
+
+    await db.collection('logs').add(logDoc);
+  } catch (err) {
+    console.error('Error guardando log de admin:', err);
+  }
+}
 
 // ================== LOGIN ==================
 const form = $('#adminForm');
@@ -100,6 +130,54 @@ if (form){
       btn.disabled=false; btn.textContent='Ingresar';
     }
   });
+}
+
+// ================== DASHBOARD (logs) ==================
+if (document.body.dataset.page === 'admin-dashboard') {
+  (async ()=>{
+    clearAlert();
+    const user = await waitForAuthReady();
+    if (!user) {
+      showAlert('warning','No hay sesión de Firebase activa. Volvé a iniciar sesión.');
+      setTimeout(()=>{ window.location.href = '../admin.php'; }, 900);
+      return;
+    }
+
+    const tbody = document.getElementById('tblLogs');
+    if (!tbody) return;
+
+    try {
+      const snap = await db.collection('logs')
+        .orderBy('log_createdAt', 'desc')
+        .limit(50)
+        .get();
+
+      tbody.innerHTML = '';
+      if (snap.empty) {
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="text-secondary">Sin registros de acciones todavía.</td></tr>';
+        return;
+      }
+
+      snap.forEach(doc=>{
+        const l = doc.data() || {};
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${tsToDateTime(l.log_createdAt)}</td>
+          <td class="small">${escapeHtml(l.log_adminEmail || l.log_adminUid || '—')}</td>
+          <td>${escapeHtml(l.log_action || '—')}</td>
+          <td><code class="small">${escapeHtml(l.log_collection || '—')}</code></td>
+          <td><code class="small">${escapeHtml(l.log_docId || '—')}</code></td>
+          <td class="small">${escapeHtml(l.targetName || l.detail || '')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML =
+        '<tr><td colspan="6" class="text-danger small">No se pudieron cargar los logs.</td></tr>';
+    }
+  })();
 }
 
 // ================== USUARIOS ==================
@@ -211,26 +289,31 @@ if (document.getElementById('usersTable')) {
               usu_admin:true, usu_rol:'admin',
               usu_suspendido:false, usu_estado:'activo'
             }, { merge:true });
+            await logAdminAction('user_make_admin','users',uid,{targetName:name});
             showAlert('success', `“${name}” ahora es administrador.`);
           } else if (action === 'user') {
             await db.collection('users').doc(uid).set({
               usu_admin:false, usu_rol:'user'
             }, { merge:true });
+            await logAdminAction('user_make_user','users',uid,{targetName:name});
             showAlert('success', `“${name}” volvió a rol usuario.`);
           } else if (action === 'suspend') {
             if (!confirm(`¿Suspender a “${name}”?`)) return;
             await db.collection('users').doc(uid).set({
               usu_suspendido:true,  usu_estado:'suspendido'
             }, { merge:true });
+            await logAdminAction('user_suspend','users',uid,{targetName:name});
             showAlert('success', `Cuenta de “${name}” suspendida.`);
           } else if (action === 'unsuspend') {
             await db.collection('users').doc(uid).set({
               usu_suspendido:false, usu_estado:'activo'
             }, { merge:true });
+            await logAdminAction('user_unsuspend','users',uid,{targetName:name});
             showAlert('success', `Cuenta de “${name}” reactivada.`);
           } else if (action === 'del') {
             if (!confirm(`¿Eliminar definitivamente a “${name}”?`)) return;
             await db.collection('users').doc(uid).delete();
+            await logAdminAction('user_delete','users',uid,{targetName:name});
             showAlert('success','Usuario eliminado.');
             btn.closest('tr')?.remove();
           }
@@ -498,8 +581,14 @@ if (document.body.dataset.page === 'admin-cos') {
       if (btn.dataset.action === 'del') {
         if (!confirm('¿Eliminar definitivamente este cosmético?')) return;
         const id = tr.dataset.id;
+        const cosName = tr.children[1].textContent.trim();
+        const cosTipo = tr.dataset.tipo || '';
         db.collection('cosmetics').doc(id).delete()
-          .then(()=>{
+          .then(async ()=>{
+            await logAdminAction('cosmetic_delete','cosmetics',id,{
+              targetName: cosName,
+              cosType: cosTipo
+            });
             showAlert('success','Cosmético eliminado.');
             tr.remove();
           })
@@ -525,6 +614,10 @@ if (document.body.dataset.page === 'admin-cos') {
 
       try{
         await db.collection('cosmetics').doc(id).set(payload,{merge:true});
+        await logAdminAction('cosmetic_update','cosmetics',id,{
+          targetName: elNombre.value.trim(),
+          cosType: elTipo.value
+        });
         showAlert('success','Cosmético actualizado.');
         modal.hide();
         setTimeout(()=>location.reload(), 400);
@@ -551,6 +644,10 @@ if (document.body.dataset.page === 'admin-cos') {
 
       try{
         await db.collection('cosmetics').doc(id).set(payload,{merge:true});
+        await logAdminAction('cosmetic_create','cosmetics',id,{
+          targetName: elNombre.value.trim(),
+          cosType: elTipo.value
+        });
         showAlert('success','Cosmético creado.');
         modal.hide();
         setTimeout(()=>location.reload(), 400);
@@ -578,18 +675,11 @@ if (document.body.dataset.page === 'admin-rooms') {
     }
 
     const $id = (id)=>document.getElementById(id);
-    const fmtDateTime = (ts)=>{
-      if (!ts) return '—';
-      try{
-        const d = ts.toDate ? ts.toDate() :
-          (ts.seconds ? new Date(ts.seconds*1000) : new Date(ts));
-        return d.toLocaleString('es-AR');
-      }catch{ return '—'; }
-    };
 
     async function borrarDoc(col, id){
       if(!confirm(`¿Eliminar ${col}/${id}?`)) return;
       await db.collection(col).doc(id).delete();
+      await logAdminAction(`delete_${col}`, col, id);
       if(col==='events')      await loadEvents();
       else if(col==='versus') await loadVersus();
       else if(col==='rooms')  await loadRooms();
@@ -654,7 +744,7 @@ if (document.body.dataset.page === 'admin-rooms') {
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="mono-cell"><code class="small">${doc.id}</code></td>
-            <td>${fmtDateTime(v.ver_createdAt)}</td>
+            <td>${tsToDateTime(v.ver_createdAt)}</td>
             <td>${playersCount}</td>
             <td>${mode}</td>
             <td>${targetVal}</td>
@@ -710,7 +800,7 @@ if (document.body.dataset.page === 'admin-rooms') {
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="mono-cell"><code class="small">${doc.id}</code></td>
-            <td>${fmtDateTime(r.roo_createdAt)}</td>
+            <td>${tsToDateTime(r.roo_createdAt)}</td>
             <td>${r.roo_code ? `<span class="badge badge-mono">${escapeHtml(r.roo_code)}</span>` : '—'}</td>
             <td class="small mono-cell"><code>${r.roo_user || '—'}</code></td>
             <td>${mode}</td>
@@ -752,7 +842,7 @@ if (document.body.dataset.page === 'admin-rooms') {
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="mono-cell"><code class="small">${doc.id}</code></td>
-            <td>${fmtDateTime(r.ran_createdAt)}</td>
+            <td>${tsToDateTime(r.ran_createdAt)}</td>
             <td>${r.ran_weekKey ?? '—'}</td>
             <td>${players}</td>
             <td class="text-end">
@@ -801,8 +891,8 @@ if (document.body.dataset.page === 'admin-rooms') {
           tr.innerHTML = `
             <td class="mono-cell"><code class="small">${doc.id}</code></td>
             <td>${active ? '<span class="badge text-bg-success">Sí</span>' : '<span class="badge text-bg-secondary">No</span>'}</td>
-            <td>${fmtDateTime(e.ev_startAt)}</td>
-            <td>${fmtDateTime(e.ev_endAt)}</td>
+            <td>${tsToDateTime(e.ev_startAt)}</td>
+            <td>${tsToDateTime(e.ev_endAt)}</td>
             <td>${e.ev_targetSteps ?? 0}</td>
             <td>${e.ev_rewardCoins ?? 0}</td>
             <td>${e.ev_bossImg ? `<a href="${e.ev_bossImg}" target="_blank" class="small text-decoration-underline">ver</a>` : '—'}</td>
@@ -867,9 +957,11 @@ if (document.body.dataset.page === 'admin-rooms') {
         const bossUrl = (evBoss?.value || '').trim();
         if (bossUrl) payload.ev_bossImg = bossUrl;
 
-        await db.collection('events').add(payload);
+        const ref = await db.collection('events').add(payload);
+        await logAdminAction('event_create','events',ref.id,{
+          targetSteps: payload.ev_targetSteps
+        });
         showAlert('success','Evento creado correctamente.');
-        // limpiar rápido
         if (evBoss)   evBoss.value   = '';
         if (evTarget) evTarget.value = '100000';
         if (evReward) evReward.value = '50000';

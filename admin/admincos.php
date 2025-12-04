@@ -194,7 +194,7 @@ require __DIR__ . '/adminguard.php';
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <!-- Lógica -->
-<script src="../js/admin.js?v=21" type="module"></script>
+<script src="../js/admin.js?v=25" type="module"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

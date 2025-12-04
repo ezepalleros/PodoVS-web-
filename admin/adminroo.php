@@ -168,6 +168,8 @@ require __DIR__ . '/adminguard.php'; // protege por sesión PHP del panel
             <div class="col-12">
               <label for="evBoss" class="form-label">URL monstruo (Cloudinary PNG)</label>
               <input type="url" id="evBoss" class="form-control" placeholder="https://res.cloudinary.com/.../boss.png">
+                <a href="https://console.cloudinary.com/app/c-515f713fee005110d89bc50c716548/assets/media_library/folders/cd07c8cae48901f00987849f2f2c6a4059?view_mode=mosaic"
+                 target="_blank" rel="noopener">Abrir Cloudinary</a>
             </div>
             <div class="col-12 text-end">
               <button type="submit" class="btn btn-success btn-sm" id="btnEvCreate">

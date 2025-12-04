@@ -113,6 +113,6 @@ require __DIR__ . '/adminguard.php'; // protege por sesión PHP del panel
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <!-- Lógica del panel admin -->
-  <script src="../js/admin.js?v=12" type="module"></script>
+  <script src="../js/admin.js?v=25" type="module"></script>
 </body>
 </html>
