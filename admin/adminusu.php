@@ -1,9 +1,9 @@
 <?php
-// admin/adminusu.php
-require __DIR__ . '/adminguard.php'; // protege por sesión PHP del panel
+require __DIR__ . '/adminguard.php';
 ?>
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,6 +11,7 @@ require __DIR__ . '/adminguard.php'; // protege por sesión PHP del panel
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../css/stylesadmin.css?v=1" rel="stylesheet">
 </head>
+
 <body class="bg-body" data-page="admin-usuarios">
   <?php include __DIR__ . '/../componentes/headeradmin.php'; ?>
 
@@ -115,4 +116,5 @@ require __DIR__ . '/adminguard.php'; // protege por sesión PHP del panel
   <!-- Lógica del panel admin -->
   <script src="../js/admin.js?v=25" type="module"></script>
 </body>
+
 </html>

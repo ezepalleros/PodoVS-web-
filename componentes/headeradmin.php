@@ -1,5 +1,4 @@
 <?php
-// /componentes/headeradmin.php
 $inAdmin = (strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false);
 $P = $inAdmin ? '..' : '.';
 ?>

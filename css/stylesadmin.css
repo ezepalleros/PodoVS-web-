@@ -1,13 +1,32 @@
-/* css/stylesadmin.css */
-:root{ --card-radius: 1rem; }
-body{ background:#f8fafc; }
-.card{ border:0; border-radius: var(--card-radius); }
-.table td, .table th { vertical-align: middle; }
-.alert{ white-space: pre-wrap; }
+:root {
+  --card-radius: 1rem;
+}
+
+body {
+  background: #f8fafc;
+}
+
+.card {
+  border: 0;
+  border-radius: var(--card-radius);
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.alert {
+  white-space: pre-wrap;
+}
 
 /* Login */
-.page-login{
-  background: linear-gradient(135deg,#ecfeff,#f5f3ff);
+.page-login {
+  background: linear-gradient(135deg, #ecfeff, #f5f3ff);
   min-height: 100vh;
 }
-.card-admin{ max-width: 480px; margin: 6rem auto; }
+
+.card-admin {
+  max-width: 480px;
+  margin: 6rem auto;
+}

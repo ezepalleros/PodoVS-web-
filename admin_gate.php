@@ -1,8 +1,6 @@
 <?php
-// /admin_gate.php — SET/UNSET sesión vía GET y REDIRECCIÓN
 declare(strict_types=1);
 
-// Mismos parámetros de cookie
 $cookieParams = [
   'lifetime' => 0,
   'path'     => '/',
@@ -16,7 +14,7 @@ if (PHP_VERSION_ID >= 70300) {
 } else {
   session_set_cookie_params(
     $cookieParams['lifetime'],
-    $cookieParams['path'].'; samesite='.$cookieParams['samesite'],
+    $cookieParams['path'] . '; samesite=' . $cookieParams['samesite'],
     $cookieParams['domain'],
     $cookieParams['secure'],
     $cookieParams['httponly']
@@ -26,7 +24,6 @@ if (PHP_VERSION_ID >= 70300) {
 session_start();
 
 if (isset($_GET['set'])) {
-  // Marca sesión de admin y redirige al panel
   session_regenerate_id(true);
   $_SESSION['admin_ok'] = true;
   $_SESSION['admin_ok_time'] = time();
@@ -36,7 +33,6 @@ if (isset($_GET['set'])) {
 }
 
 if (isset($_GET['unset'])) {
-  // Cierra sesión y redirige al inicio
   unset($_SESSION['admin_ok'], $_SESSION['admin_ok_time']);
   session_write_close();
   header('Location: index.php');
